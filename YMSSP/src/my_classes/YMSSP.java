@@ -17,6 +17,25 @@ import org.apache.commons.math3.transform.TransformType;
 
 import java.net.SocketAddress;
 
+
+//        clicky settings
+//        freq=30
+//        modRatio=0.05
+//        modLevel=1			(up to 10 or even 100)
+//        bffreq =800
+//
+//        drone settings
+//        freq=300
+//        modRatio=0.50001
+//        modLevel=0.8			 (crank up to 10 or even 100 goes nuts)
+//        bfFreq=200-250
+//
+//        Space drone
+//        freq=300
+//        modRatio=0.050001
+//        modLevel=1
+//        bfFreq=200-250
+
 public class YMSSP implements HBAction {
 
     enum Mode {
@@ -26,13 +45,19 @@ public class YMSSP implements HBAction {
     Mode mode;
 
     final int GYRO_HISTORY_LEN = 512;
+    final int INTERVAL_HISTORY_LEN = 10;
     final int PERIOD_HISTORY_LEN = 100;
     final int STEPS_BETWEEN_UPDATE = 10;
     final int PADDING = 1;
+    final float PMIN = 100;
+    final float PMAX = 5000;
+    final float DEVIATION_THRESH = 1.5f;
 
     float gyroMag;          //abs mag of gyro movements
     double[] gyroHistory;    //ring buffer storing history of gyro
     int gyroHistoryWritePos;
+    float[] intervalHistory;
+    int intervalHistoryWritePos;
     double[] cosineWindow;
     double[][] fftPeriod;
 
@@ -41,8 +66,7 @@ public class YMSSP implements HBAction {
     float[] periodHistory;
     int periodHistoryWritePos;
 
-    Envelope level;
-    Envelope freq, modRatio, modLevel;
+    Envelope level, freq, modRatio, modLevel, bfFreq;
 
     long count;
     long updateIntervalMS;
@@ -51,14 +75,26 @@ public class YMSSP implements HBAction {
 
     int errorCount = 0;
 
-    float intensity, periodStrength, deviation, theOtherPeriod = -1, theOtherStability, integratedPeriod;
+    float intensity, periodStrength, deviation, theOtherPeriod = -1, theOtherDeviation, integratedPeriod;
     FloatBuddyControl intensityControl, periodControl, periodStrengthControl, deviationControl;
+
+    HB hb;
 
     @Override
     public void action(HB hb) {
+        this.hb = hb;
         hb.reset();
+
+        //audio controls
+        level = new Envelope(0f);
+        freq = new Envelope(300);
+        modRatio = new Envelope(0.50001f);
+        modLevel = new Envelope(2f);
+        bfFreq = new Envelope(250);
+
         //data arrays
         gyroHistory = new double[GYRO_HISTORY_LEN];
+        intervalHistory = new float[INTERVAL_HISTORY_LEN];
         cosineWindow = new double[GYRO_HISTORY_LEN];
         fftPeriod = new double[2][GYRO_HISTORY_LEN];
         for(int i = 0; i < cosineWindow.length; i++) {
@@ -66,47 +102,9 @@ public class YMSSP implements HBAction {
         }
         periodHistory = new float[PERIOD_HISTORY_LEN];
         mode = Mode.DISJOINT;
+        hb.setStatus("Mode="+mode.toString());
 
-        //audio controls
-        level = new Envelope(0.6f);
-        freq = new Envelope(30);
-        modRatio = new Envelope(0.05f);
-        modLevel = new Envelope(1f);
-
-        //audio system
-        Gain beepGain = new Gain(1, level);
-        WavePlayer carrier = new WavePlayer(new Mult(modRatio, freq), Buffer.SAW);
-        Function mod = new Function(freq, carrier, modLevel) {
-            @Override
-            public float calculate() {
-                return x[0] * (1 + x[1] * x[2]);
-            }
-        };
-        WavePlayer wp = new WavePlayer(mod, Buffer.SAW);
-        beepGain.addInput(wp);
-        BiquadFilter bf = new BiquadFilter(hb.ac, 1, BiquadFilter.Type.LP);
-        Glide bffreq = new Glide(hb.ac, 800);
-        bf.setFrequency(bffreq);
-        bf.setQ(2f);
-        bf.setGain(5f);
-        bf.addInput(beepGain);
-
-        BiquadFilter hpf = new BiquadFilter(hb.ac, 1, BiquadFilter.HP);
-        hpf.setFrequency(100);
-        hpf.setQ(1f);
-        hpf.setGain(1f);
-
-        Reverb rb = new Reverb(hb.ac);
-        rb.setDamping(0.1f);
-        rb.addInput(bf);
-
-        hpf.addInput(bf);
-//        hpf.addInput(rb);
-        hb.sound(hpf);
-
-        hb.setStatus("outs="+hb.ac.out.getOuts());
-
-
+        setupAudioSystem();
         setupControls();
 
         hb.pattern(new Bead() {
@@ -116,9 +114,9 @@ public class YMSSP implements HBAction {
 //                    if(hb.clock.getBeatCount() % 2 == 0) {
 ////                        freq.clear();
 ////                        freq.addSegment(3750, 20);
-//                        level.clear();
-//                        level.addSegment(0.6f, 50);
-//                        level.addSegment(0, 50);
+                        level.clear();
+                        level.addSegment(0.6f, 50);
+                        level.addSegment(0, 50);
 //                    } else {
 //                        freq.clear();
 ////                        freq.addSegment(500, 20);
@@ -134,26 +132,12 @@ public class YMSSP implements HBAction {
             @Override
             public void messageReceived(OSCMessage oscMessage, SocketAddress socketAddress, long l) {
                 //period strength
-                if(oscMessage.getName().equals("S_"+ hb.myIndex())) {
+                if(oscMessage.getName().equals("D_"+ hb.myIndex())) {
                     //ignore, this is self
-                } else if(oscMessage.getName().startsWith("S_")) {
+                } else if(oscMessage.getName().startsWith("D_")) {
                     //this must be the other device
-                    Mode newMode = null;
-                    theOtherStability = (float)oscMessage.getArg(0);
-                           if(theOtherStability < 0  && deviation < 0 ) {
-                               newMode = Mode.DISJOINT;
-                    } else if(theOtherStability < 0  && deviation >= 0) {
-                               newMode = Mode.BASELINE;
-                    } else if(theOtherStability >= 0 && deviation < 0 ) {
-                               newMode = Mode.SOLO;
-                    } else if(theOtherStability >= 0 && deviation >= 0) {
-                               newMode = Mode.UNITY;
-                    }
-                    if(newMode != mode) {
-                        modeUpdated();
-                        mode = newMode;
-                        hb.setStatus(mode.toString());
-                    }
+                    theOtherDeviation = (float)oscMessage.getArg(0);
+                   checkMode();
                 }
                 //period
                 else if(oscMessage.getName().equals("P_"+ hb.myIndex())) {
@@ -180,16 +164,19 @@ public class YMSSP implements HBAction {
                     float[] autocorellationFeatures = findPeakPeriod();
                     float tempPeriod = autocorellationFeatures[0];
                     if(tempPeriod > 0 && tempPeriod < 10000) {
-                        periodHistory[periodHistoryWritePos] = tempPeriod;
+                        period += (tempPeriod - period) * 0.1f;
+                        //convert period history to -1:1 range before storing
+                        float normalisedPeriod = (2 * (period - PMIN) / (PMAX - PMIN)) - 1;
+                        normalisedPeriod = (float)Math.tanh(normalisedPeriod);
+                        periodHistory[periodHistoryWritePos] = normalisedPeriod;
                         periodHistoryWritePos = (periodHistoryWritePos + 1) % PERIOD_HISTORY_LEN;
-                        period += (tempPeriod - period) * 0.5f;
                         if(theOtherPeriod > 0) {
                             integratedPeriod = (period + theOtherPeriod) / 2;
                         } else {
                             integratedPeriod = period;
                         }
                     }
-                    UGen clockInterval =  hb.clock.getIntervalUGen();
+                    UGen clockInterval = hb.clock.getIntervalUGen();
                     if(clockInterval != null && period > 0 && period < 100000) { //looking out for bad numbers
                         clockInterval.setValue(integratedPeriod * 1f);
                     } else {
@@ -200,7 +187,8 @@ public class YMSSP implements HBAction {
                     //set core variables
                     intensity = gyroMag;
                     periodStrength = autocorellationFeatures[1];
-                    deviation = periodDeviation;          //TODO make deviation range go from < 0 to > 0
+                    deviation = periodDeviation;
+                    checkMode();
                     //set the global controls, if we're using them
                     if(intensityControl != null) {
                         intensityControl.setValue(intensity);
@@ -208,12 +196,22 @@ public class YMSSP implements HBAction {
                         periodStrengthControl.setValue(periodStrength);
                         deviationControl.setValue(deviation);
                     }
-
                     //keep time
                     long now = System.currentTimeMillis();
-                    updateIntervalMS = (now - previousTimeMS) / STEPS_BETWEEN_UPDATE;
-                    sampleFreq = 1000f / updateIntervalMS;
+                    float updateIntervalMSTmp = (now - previousTimeMS) / STEPS_BETWEEN_UPDATE;
                     previousTimeMS = now;
+                    intervalHistory[intervalHistoryWritePos] = updateIntervalMSTmp;
+                    intervalHistoryWritePos = (intervalHistoryWritePos + 1) % INTERVAL_HISTORY_LEN;
+                    //compute new average
+                    updateIntervalMS = 0;
+                    for(int i = 0; i < INTERVAL_HISTORY_LEN; i++) {
+                        updateIntervalMS += intervalHistory[i];
+                    }
+                    updateIntervalMS /= INTERVAL_HISTORY_LEN;
+                    sampleFreq = 1000f / updateIntervalMS;
+                    //send values
+                    hb.broadcast("D_"+hb.myIndex(), deviation);
+                    hb.broadcast("P_"+hb.myIndex(), period);
                 }
                 //keep time
                 count++;
@@ -221,8 +219,59 @@ public class YMSSP implements HBAction {
         };
     }
 
+    private void checkMode() {
+        Mode newMode = null;
+        if(theOtherDeviation >= DEVIATION_THRESH  && deviation >= DEVIATION_THRESH ) {
+            newMode = Mode.DISJOINT;
+        } else if(theOtherDeviation >= DEVIATION_THRESH  && deviation < DEVIATION_THRESH) {
+            newMode = Mode.BASELINE;
+        } else if(theOtherDeviation < DEVIATION_THRESH && deviation >= DEVIATION_THRESH ) {
+            newMode = Mode.SOLO;
+        } else if(theOtherDeviation < DEVIATION_THRESH && deviation < DEVIATION_THRESH) {
+            newMode = Mode.UNITY;
+        }
+        if(newMode != mode) {
+            modeUpdated();
+            mode = newMode;
+            hb.setStatus("Mode="+mode.toString());
+        }
+    }
+
     private void modeUpdated() {
-        //TODO
+        switch(mode) {
+            case SOLO:
+                modRatio.setValue(4f);
+                 break;
+            case UNITY:
+                modRatio.setValue(0.06677f);
+                break;
+            case BASELINE:
+                modRatio.setValue(2.5f);
+                break;
+            case DISJOINT:
+                modRatio.setValue(0.0501f);
+                break;
+        }
+    }
+
+    private void setupAudioSystem() {
+        //audio system
+        Gain beepGain = new Gain(1, level);
+        WavePlayer carrier = new WavePlayer(new Mult(modRatio, freq), Buffer.SAW);
+        Function mod = new Function(freq, carrier, modLevel) {
+            @Override
+            public float calculate() {
+                return x[0] * (1 + x[1] * x[2]);
+            }
+        };
+        WavePlayer wp = new WavePlayer(mod, Buffer.SAW);
+        beepGain.addInput(wp);
+        BiquadFilter bf = new BiquadFilter(hb.ac, 1, BiquadFilter.Type.LP);
+        bf.setFrequency(bfFreq);
+        bf.setQ(2f);
+        bf.setGain(5f);
+        bf.addInput(beepGain);
+        hb.sound(bf);
     }
 
     private void setupControls() {
@@ -280,7 +329,7 @@ public class YMSSP implements HBAction {
             float val = (float) fftPeriod[0][i];
             average += val;
         }
-        average /= fftPeriod[0].length / 2;
+        average /= fftPeriod[0].length / 2f;
         for(int i = PADDING; i < fftPeriod[0].length/2 - PADDING; i++) {
             float val = (float) fftPeriod[0][i];
             if(peak < val) {
@@ -288,7 +337,7 @@ public class YMSSP implements HBAction {
                 bestIndex = i;
             }
         }
-        float freq = bestIndex * sampleFreq / (fftPeriod[0].length/2); // f_bin = i*f_s/N
+        float freq = bestIndex * sampleFreq / (fftPeriod[0].length/2f); // f_bin = i*f_s/N
         float period = 1000 / freq;
         return new float[] {period, (peak - average)};
     }
