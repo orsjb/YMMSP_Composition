@@ -41,8 +41,8 @@ public class YMSSP implements HBAction {
     float[] periodHistory;
     int periodHistoryWritePos;
 
-    Envelope beepLevel;
-    Envelope freq;
+    Envelope level;
+    Envelope freq, modRatio, modLevel;
 
     long count;
     long updateIntervalMS;
@@ -67,13 +67,45 @@ public class YMSSP implements HBAction {
         periodHistory = new float[PERIOD_HISTORY_LEN];
         mode = Mode.DISJOINT;
 
-        //audio stuff
-        beepLevel = new Envelope(0);
-        Gain beepGain = new Gain(1, beepLevel);
-        freq = new Envelope(500);
-        WavePlayer wp = new WavePlayer(freq, Buffer.SINE);
+        //audio controls
+        level = new Envelope(0.6f);
+        freq = new Envelope(30);
+        modRatio = new Envelope(0.05f);
+        modLevel = new Envelope(1f);
+
+        //audio system
+        Gain beepGain = new Gain(1, level);
+        WavePlayer carrier = new WavePlayer(new Mult(modRatio, freq), Buffer.SAW);
+        Function mod = new Function(freq, carrier, modLevel) {
+            @Override
+            public float calculate() {
+                return x[0] * (1 + x[1] * x[2]);
+            }
+        };
+        WavePlayer wp = new WavePlayer(mod, Buffer.SAW);
         beepGain.addInput(wp);
-        hb.ac.out.addInput(beepGain);
+        BiquadFilter bf = new BiquadFilter(hb.ac, 1, BiquadFilter.Type.LP);
+        Glide bffreq = new Glide(hb.ac, 800);
+        bf.setFrequency(bffreq);
+        bf.setQ(2f);
+        bf.setGain(5f);
+        bf.addInput(beepGain);
+
+        BiquadFilter hpf = new BiquadFilter(hb.ac, 1, BiquadFilter.HP);
+        hpf.setFrequency(100);
+        hpf.setQ(1f);
+        hpf.setGain(1f);
+
+        Reverb rb = new Reverb(hb.ac);
+        rb.setDamping(0.1f);
+        rb.addInput(bf);
+
+        hpf.addInput(bf);
+//        hpf.addInput(rb);
+        hb.sound(hpf);
+
+        hb.setStatus("outs="+hb.ac.out.getOuts());
+
 
         setupControls();
 
@@ -81,19 +113,19 @@ public class YMSSP implements HBAction {
             @Override
             protected void messageReceived(Bead message) {
                 if(hb.clock.isBeat()) {
-                    if(hb.clock.getBeatCount() % 2 == 0) {
+//                    if(hb.clock.getBeatCount() % 2 == 0) {
+////                        freq.clear();
+////                        freq.addSegment(3750, 20);
+//                        level.clear();
+//                        level.addSegment(0.6f, 50);
+//                        level.addSegment(0, 50);
+//                    } else {
 //                        freq.clear();
-//                        freq.addSegment(3750, 20);
-                        beepLevel.clear();
-                        beepLevel.addSegment(0.2f, 50);
-                        beepLevel.addSegment(0, 50);
-                    } else {
-                        freq.clear();
-                        freq.addSegment(500, 20);
-                        beepLevel.clear();
-                        beepLevel.addSegment(0.2f, 50);
-                        beepLevel.addSegment(0, 50);
-                    }
+////                        freq.addSegment(500, 20);
+////                        level.clear();
+//                        level.addSegment(0.6f, 50);
+//                        level.addSegment(0, 50);
+//                    }
                 }
             }
         });
