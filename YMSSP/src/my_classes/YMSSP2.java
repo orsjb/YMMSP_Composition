@@ -5,6 +5,7 @@ import de.sciss.net.OSCMessage;
 import net.beadsproject.beads.core.Bead;
 import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.data.Buffer;
+import net.beadsproject.beads.data.SampleManager;
 import net.beadsproject.beads.ugens.*;
 import net.happybrackets.core.HBAction;
 import net.happybrackets.core.control.ControlScope;
@@ -18,25 +19,7 @@ import org.apache.commons.math3.transform.TransformType;
 import java.net.SocketAddress;
 
 
-//        clicky settings
-//        freq=30
-//        modRatio=0.05
-//        modLevel=1			(up to 10 or even 100)
-//        bffreq =800
-//
-//        drone settings
-//        freq=300
-//        modRatio=0.50001
-//        modLevel=0.8			 (crank up to 10 or even 100 goes nuts)
-//        bfFreq=200-250
-//
-//        Space drone
-//        freq=300
-//        modRatio=0.050001
-//        modLevel=1
-//        bfFreq=200-250
-
-public class YMSSP implements HBAction {
+public class YMSSP2 implements HBAction {
 
     enum Mode {
         DISJOINT,SOLO,BASELINE,UNITY
@@ -66,8 +49,6 @@ public class YMSSP implements HBAction {
     float[] periodHistory;
     int periodHistoryWritePos;
 
-    Envelope level, freq, modRatio, modLevel, bfFreq;
-
     long count;
     long updateIntervalMS;
     float sampleFreq;
@@ -78,6 +59,14 @@ public class YMSSP implements HBAction {
     float intensity, periodStrength, deviation, theOtherPeriod = -1, theOtherDeviation, integratedPeriod;
     FloatBuddyControl intensityControl, periodControl, periodStrengthControl, deviationControl;
 
+    //audio stuff
+    Envelope level, rate, bfFreq;
+    GranularSamplePlayer gsp;
+    String regularBell = "data/audio/Bells_004.46.wav";
+    String irregularBell = "data/audio/Bells_009.114.wav";
+    float irregLen = (float)SampleManager.sample(irregularBell).getLength();
+    float maxLevel = 5;
+
     HB hb;
 
     @Override
@@ -87,10 +76,8 @@ public class YMSSP implements HBAction {
 
         //audio controls
         level = new Envelope(0f);
-        freq = new Envelope(300);
-        modRatio = new Envelope(0.50001f);
-        modLevel = new Envelope(2f);
-        bfFreq = new Envelope(250);
+        rate = new Envelope(1);
+        bfFreq = new Envelope(10000);
 
         //data arrays
         gyroHistory = new double[GYRO_HISTORY_LEN];
@@ -101,29 +88,41 @@ public class YMSSP implements HBAction {
             cosineWindow[i] = Math.cos(Math.PI*(double)i/GYRO_HISTORY_LEN);
         }
         periodHistory = new float[PERIOD_HISTORY_LEN];
-        mode = Mode.DISJOINT;
-        hb.setStatus("Mode="+mode.toString());
+
 
         setupAudioSystem();
-        setupControls();
+
+        mode = Mode.DISJOINT;
+        modeUpdated();
+//        setupControls();
 
         hb.pattern(new Bead() {
             @Override
             protected void messageReceived(Bead message) {
                 if(hb.clock.isBeat()) {
-//                    if(hb.clock.getBeatCount() % 2 == 0) {
-////                        freq.clear();
-////                        freq.addSegment(3750, 20);
-                        level.clear();
-                        level.addSegment(0.6f, 50);
-                        level.addSegment(0, 50);
-//                    } else {
-//                        freq.clear();
-////                        freq.addSegment(500, 20);
-////                        level.clear();
-//                        level.addSegment(0.6f, 50);
-//                        level.addSegment(0, 50);
-//                    }
+                    switch (mode) {
+                        case SOLO:
+//                            level.clear();
+//                            level.addSegment(maxLevel, 50);
+                            break;
+                        case UNITY:
+                            level.clear();
+                            level.addSegment(maxLevel, 50);
+                            level.addSegment(maxLevel, 100);
+                            level.addSegment(0, 200);
+                            break;
+                        case BASELINE:
+                            level.clear();
+                            level.addSegment(maxLevel, 50);
+                            level.addSegment(maxLevel, 100);
+                            level.addSegment(0, 200);
+                            break;
+                        case DISJOINT:
+//                            level.clear();
+//                            level.addSegment(maxLevel, 50);
+                            break;
+                    }
+//                    hb.testBleep();
                 }
             }
         });
@@ -147,6 +146,7 @@ public class YMSSP implements HBAction {
                     theOtherPeriod = (float)oscMessage.getArg(0);
                     integratedPeriod = (theOtherPeriod + period) / 2;
                 }
+//                hb.setStatus("Got incoming message " + oscMessage.getName());
             }
         });
 
@@ -212,7 +212,20 @@ public class YMSSP implements HBAction {
                     //send values
                     hb.broadcast("D_"+hb.myIndex(), deviation);
                     hb.broadcast("P_"+hb.myIndex(), period);
+
+                    statusReport();
                 }
+
+
+
+                //now do some direct manipulation
+                if(mode == Mode.DISJOINT || mode == Mode.SOLO) {
+                    gsp.getPitchUGen().setValue(pitch);
+                    level.clear();
+                    level.addSegment(yaw * maxLevel, 50);
+                }
+
+
                 //keep time
                 count++;
             }
@@ -233,68 +246,89 @@ public class YMSSP implements HBAction {
         if(newMode != mode) {
             modeUpdated();
             mode = newMode;
-            hb.setStatus("Mode="+mode.toString());
         }
+    }
+
+    private void statusReport() {
+        hb.setStatus("Mode="+mode.toString() + ": period=" + period + ": otherPeriod=" + theOtherPeriod);
     }
 
     private void modeUpdated() {
         switch(mode) {
             case SOLO:
-                modRatio.setValue(4f);
+                gsp.setSample(SampleManager.sample(irregularBell));
+                gsp.getPitchUGen().setValue(1f);
+                gsp.getRateUGen().setValue(0.01f);
+                gsp.getLoopStartUGen().setValue(0);
+                gsp.getLoopEndUGen().setValue(irregLen);
+                gsp.setPosition(irregLen/2);
                  break;
             case UNITY:
-                modRatio.setValue(0.06677f);
+                gsp.setSample(SampleManager.sample(regularBell));
+                gsp.getPitchUGen().setValue(1f);
+                gsp.getRateUGen().setValue(0.1f);
+                gsp.getLoopStartUGen().setValue(50);
+                gsp.getLoopEndUGen().setValue(500);
                 break;
             case BASELINE:
-                modRatio.setValue(2.5f);
+                gsp.setSample(SampleManager.sample(regularBell));
+                gsp.getPitchUGen().setValue(0.5f);
+                gsp.getRateUGen().setValue(0.1f);
+                gsp.getLoopStartUGen().setValue(50);
+                gsp.getLoopEndUGen().setValue(500);
                 break;
             case DISJOINT:
-                modRatio.setValue(0.0501f);
+                gsp.setSample(SampleManager.sample(irregularBell));
+                gsp.getPitchUGen().setValue(2f);
+                gsp.getRateUGen().setValue(1f);
+                gsp.getLoopStartUGen().setValue(0);
+                gsp.getLoopEndUGen().setValue(irregLen);
+                gsp.setPosition(irregLen/2);
                 break;
         }
     }
 
     private void setupAudioSystem() {
         //audio system
-        Gain beepGain = new Gain(1, level);
-        WavePlayer carrier = new WavePlayer(new Mult(modRatio, freq), Buffer.SAW);
-        Function mod = new Function(freq, carrier, modLevel) {
-            @Override
-            public float calculate() {
-                return x[0] * (1 + x[1] * x[2]);
-            }
-        };
-        WavePlayer wp = new WavePlayer(mod, Buffer.SAW);
-        beepGain.addInput(wp);
-        BiquadFilter bf = new BiquadFilter(hb.ac, 1, BiquadFilter.Type.LP);
+        gsp = new GranularSamplePlayer(SampleManager.sample(irregularBell));
+        Gain g = new Gain(1, level);
+        g.addInput(gsp);
+        gsp.setLoopType(SamplePlayer.LoopType.LOOP_ALTERNATING);
+        gsp.setPitch(new Glide(1, 200));
+        gsp.getPitchUGen().setValue(1);
+        gsp.getRateUGen().setValue(2f);
+        gsp.getLoopStartUGen().setValue(0);
+        gsp.getLoopEndUGen().setValue(irregLen);
+        gsp.setPosition(irregLen/2);
+        BiquadFilter bf = new BiquadFilter(1, BiquadFilter.Type.LP);
         bf.setFrequency(bfFreq);
-        bf.setQ(2f);
-        bf.setGain(5f);
-        bf.addInput(beepGain);
-        hb.sound(bf);
+        bf.setQ(1f);
+        bf.setGain(1f);
+        bf.addInput(g);
+        hb.ac.out.addInput(bf);
     }
 
     private void setupControls() {
         //shared variables
-        intensityControl = new FloatBuddyControl(this, "intensity", 0, 0, 5) {
+        intensityControl = new FloatBuddyControl(this, "intensity"+hb.myIndex(), 0, 0, 5) {
             @Override
             public void valueChanged(double control_val) {
             }
         };
         intensityControl.setControlScope(ControlScope.GLOBAL);
-        periodControl = new FloatBuddyControl(this, "period", 0, 0, 20000) {
+        periodControl = new FloatBuddyControl(this, "period"+hb.myIndex(), 0, 0, 20000) {
             @Override
             public void valueChanged(double control_val) {
             }
         };
         periodControl.setControlScope(ControlScope.GLOBAL);
-        periodStrengthControl = new FloatBuddyControl(this, "pstrength", 0, 0, 30) {
+        periodStrengthControl = new FloatBuddyControl(this, "pstrength"+hb.myIndex(), 0, 0, 30) {
             @Override
             public void valueChanged(double control_val) {
             }
         };
         periodStrengthControl.setControlScope(ControlScope.GLOBAL);
-        deviationControl = new FloatBuddyControl(this, "deviation", 0, 0, 300) {
+        deviationControl = new FloatBuddyControl(this, "deviation"+hb.myIndex(), 0, 0, 300) {
             @Override
             public void valueChanged(double control_val) {
             }
