@@ -11,6 +11,7 @@ import net.happybrackets.core.HBAction;
 import net.happybrackets.core.control.ControlScope;
 import net.happybrackets.core.control.FloatBuddyControl;
 import net.happybrackets.device.HB;
+import net.happybrackets.device.sensors.AccelerometerListener;
 import net.happybrackets.device.sensors.GyroscopeListener;
 import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
@@ -60,7 +61,8 @@ public class YMSSP2 implements HBAction {
     FloatBuddyControl intensityControl, periodControl, periodStrengthControl, deviationControl;
 
     //audio stuff
-    Envelope level, rate, bfFreq;
+    Envelope level, rate;
+    Glide bfFreq;
     GranularSamplePlayer gsp;
     String regularBell = "data/audio/Bells_004.46.wav";
     String irregularBell = "data/audio/Bells_009.114.wav";
@@ -77,7 +79,7 @@ public class YMSSP2 implements HBAction {
         //audio controls
         level = new Envelope(0f);
         rate = new Envelope(1);
-        bfFreq = new Envelope(10000);
+        bfFreq = new Glide(10000, 500);
 
         //data arrays
         gyroHistory = new double[GYRO_HISTORY_LEN];
@@ -92,9 +94,9 @@ public class YMSSP2 implements HBAction {
 
         setupAudioSystem();
 
-        mode = Mode.DISJOINT;
+        mode = Mode.UNITY;
         modeUpdated();
-//        setupControls();
+        setupControls();
 
         hb.pattern(new Bead() {
             @Override
@@ -107,15 +109,15 @@ public class YMSSP2 implements HBAction {
                             break;
                         case UNITY:
                             level.clear();
-                            level.addSegment(maxLevel, 50);
+                            level.addSegment(maxLevel, 200);
                             level.addSegment(maxLevel, 100);
-                            level.addSegment(0, 200);
+                            level.addSegment(0.1f, 200);
                             break;
                         case BASELINE:
                             level.clear();
-                            level.addSegment(maxLevel, 50);
+                            level.addSegment(maxLevel, 200);
                             level.addSegment(maxLevel, 100);
-                            level.addSegment(0, 200);
+                            level.addSegment(0.1f, 200);
                             break;
                         case DISJOINT:
 //                            level.clear();
@@ -153,9 +155,13 @@ public class YMSSP2 implements HBAction {
         //gyro
         new GyroscopeListener(hb) {
             @Override
-            public void sensorUpdated(float pitch, float roll, float yaw) {
+            public void sensorUpdated(float x, float y, float z) {
+
+//        new AccelerometerListener(hb) {
+//            @Override
+//            public void sensorUpdate(float x, float y, float z) {
                 //extract overall mag and put into history
-                gyroMag = (float)Math.sqrt(pitch * pitch + roll * roll + yaw * yaw);
+                gyroMag = (float)Math.sqrt(x * x + y * y + z * z);
                 gyroHistory[gyroHistoryWritePos] = gyroMag;
                 gyroHistoryWritePos = (gyroHistoryWritePos + 1) % GYRO_HISTORY_LEN;
                 //recalculate new features
@@ -164,14 +170,14 @@ public class YMSSP2 implements HBAction {
                     float[] autocorellationFeatures = findPeakPeriod();
                     float tempPeriod = autocorellationFeatures[0];
                     if(tempPeriod > 0 && tempPeriod < 10000) {
-                        period += (tempPeriod - period) * 0.1f;
+                        period += (tempPeriod - period) * 0.3f;
                         //convert period history to -1:1 range before storing
                         float normalisedPeriod = (2 * (period - PMIN) / (PMAX - PMIN)) - 1;
                         normalisedPeriod = (float)Math.tanh(normalisedPeriod);
                         periodHistory[periodHistoryWritePos] = normalisedPeriod;
                         periodHistoryWritePos = (periodHistoryWritePos + 1) % PERIOD_HISTORY_LEN;
-                        if(theOtherPeriod > 0) {
-                            integratedPeriod = (period + theOtherPeriod) / 2;
+                        if(theOtherPeriod > 0 && mode == Mode.UNITY) {
+                            integratedPeriod = (period + theOtherPeriod) * 0.5f;
                         } else {
                             integratedPeriod = period;
                         }
@@ -218,16 +224,33 @@ public class YMSSP2 implements HBAction {
 
 
 
-                //now do some direct manipulation
-                if(mode == Mode.DISJOINT || mode == Mode.SOLO) {
-                    gsp.getPitchUGen().setValue(pitch);
-                    level.clear();
-                    level.addSegment(yaw * maxLevel, 50);
-                }
-
 
                 //keep time
                 count++;
+            }
+        };
+
+        //Direct controls
+        new GyroscopeListener(hb) {
+            @Override
+            public void sensorUpdated(float x, float y, float z) {
+                float intensity = (float)Math.sqrt(x * x + y * y + z * z);
+                //now do some direct manipulation
+                if(mode == Mode.DISJOINT || mode == Mode.SOLO) {
+                    level.clear();
+                    level.addSegment(y * maxLevel, 50);
+                    gsp.getGrainIntervalUGen().setValue(Math.abs(x) * Math.abs(x) * 50 + 30);
+                    gsp.getRandomnessUGen().setValue(Math.abs(y) * Math.abs(y) * 0.001f);
+                    gsp.getRateUGen().setValue(Math.abs(z) * Math.abs(z) * 0.01f);
+                }
+                else if(mode == Mode.BASELINE) {
+//                    gsp.getPitchUGen().setValue(x * 0.1f);
+                    gsp.getGrainIntervalUGen().setValue(Math.abs(x) * 120 + 30);
+                }
+                else if(mode == Mode.UNITY) {
+                    bfFreq.setValue(Math.min(Math.abs(x), 1) * 5000 + 200);
+                }
+
             }
         };
     }
@@ -244,8 +267,8 @@ public class YMSSP2 implements HBAction {
             newMode = Mode.UNITY;
         }
         if(newMode != mode) {
-            modeUpdated();
-            mode = newMode;
+//            modeUpdated();
+//            mode = newMode;
         }
     }
 
@@ -258,32 +281,46 @@ public class YMSSP2 implements HBAction {
             case SOLO:
                 gsp.setSample(SampleManager.sample(irregularBell));
                 gsp.getPitchUGen().setValue(1f);
+                gsp.getGrainIntervalUGen().setValue(30f);
                 gsp.getRateUGen().setValue(0.01f);
                 gsp.getLoopStartUGen().setValue(0);
                 gsp.getLoopEndUGen().setValue(irregLen);
                 gsp.setPosition(irregLen/2);
+                bfFreq.setValue(10000);
                  break;
             case UNITY:
                 gsp.setSample(SampleManager.sample(regularBell));
-                gsp.getPitchUGen().setValue(1f);
+                gsp.getPitchUGen().setValue(0.5f);
+                gsp.getGrainIntervalUGen().setValue(80f);
+                gsp.getGrainSizeUGen().setValue(200f);
+                gsp.getRandomnessUGen().setValue(0.001f);
                 gsp.getRateUGen().setValue(0.1f);
                 gsp.getLoopStartUGen().setValue(50);
-                gsp.getLoopEndUGen().setValue(500);
+                gsp.getLoopEndUGen().setValue(200);
+                bfFreq.setValue(10000);
                 break;
             case BASELINE:
                 gsp.setSample(SampleManager.sample(regularBell));
                 gsp.getPitchUGen().setValue(0.5f);
-                gsp.getRateUGen().setValue(0.1f);
+                gsp.getGrainIntervalUGen().setValue(20f);
+                gsp.getGrainSizeUGen().setValue(70f);
+                gsp.getRandomnessUGen().setValue(0);
+                gsp.getRateUGen().setValue(2);
                 gsp.getLoopStartUGen().setValue(50);
-                gsp.getLoopEndUGen().setValue(500);
+                gsp.getLoopEndUGen().setValue(70);
+                bfFreq.setValue(10000);
                 break;
             case DISJOINT:
                 gsp.setSample(SampleManager.sample(irregularBell));
                 gsp.getPitchUGen().setValue(2f);
+                gsp.getGrainIntervalUGen().setValue(30f);
+                gsp.getGrainSizeUGen().setValue(70f);
+                gsp.getRandomnessUGen().setValue(0);
                 gsp.getRateUGen().setValue(1f);
                 gsp.getLoopStartUGen().setValue(0);
                 gsp.getLoopEndUGen().setValue(irregLen);
                 gsp.setPosition(irregLen/2);
+                bfFreq.setValue(10000);
                 break;
         }
     }
