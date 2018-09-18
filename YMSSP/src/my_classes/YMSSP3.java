@@ -4,25 +4,23 @@ import de.sciss.net.OSCListener;
 import de.sciss.net.OSCMessage;
 import net.beadsproject.beads.core.Bead;
 import net.beadsproject.beads.core.UGen;
-import net.beadsproject.beads.data.Buffer;
 import net.beadsproject.beads.data.SampleManager;
 import net.beadsproject.beads.ugens.*;
 import net.happybrackets.core.HBAction;
 import net.happybrackets.core.control.ControlScope;
 import net.happybrackets.core.control.FloatBuddyControl;
 import net.happybrackets.device.HB;
-import net.happybrackets.device.sensors.AccelerometerListener;
 import net.happybrackets.device.sensors.GyroscopeListener;
 import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
 
 import java.net.SocketAddress;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 
-//TODO implement zero-crossing method
-
-public class YMSSP2 implements HBAction {
+public class YMSSP3 implements HBAction {
 
     enum Mode {
         DISJOINT,SOLO,BASELINE,UNITY
@@ -162,6 +160,8 @@ public class YMSSP2 implements HBAction {
 //        new AccelerometerListener(hb) {
 //            @Override
 //            public void sensorUpdate(float x, float y, float z) {
+
+
                 //extract overall mag and put into history
                 gyroMag = (float)Math.sqrt(x * x + y * y + z * z);
 
@@ -170,7 +170,8 @@ public class YMSSP2 implements HBAction {
                 //recalculate new features
                 if(count % STEPS_BETWEEN_UPDATE == 0) {
                     //get autocorrelation value
-                    float[] autocorellationFeatures = findPeakPeriod();
+//                    float[] autocorellationFeatures = findPeakPeriodFFT();
+                    float[] autocorellationFeatures = findPeakPeriodXCross();
                     float tempPeriod = autocorellationFeatures[0];
                     System.out.println(tempPeriod);
                     if(tempPeriod > 0 && tempPeriod < 10000) {
@@ -390,13 +391,63 @@ public class YMSSP2 implements HBAction {
         return (float)Math.sqrt(deviation);
     }
 
-    private float[] findPeakPeriod() {
+    private float[] findPeakPeriodXCross() {
+        float theperiod = 0;
+        float theconfidence = 0;
+        //get average
+        float average = 0;
         for(int i = 0; i < GYRO_HISTORY_LEN; i++) {
-            fftPeriod[0][i] = gyroHistory[(gyroHistoryWritePos + i) % GYRO_HISTORY_LEN] * cosineWindow[i];
+            double val = gyroHistory[(gyroHistoryWritePos - 1 - i) % GYRO_HISTORY_LEN];
+            average += val;
+
+        }
+        average /= GYRO_HISTORY_LEN;
+        //determine all the zerocross times
+        ArrayList<Integer> crosstimes = new ArrayList<>();      //TODO inefficient
+        boolean up = (gyroHistory[(gyroHistoryWritePos - 1) % GYRO_HISTORY_LEN] - average) > 0;
+        boolean firstUp = true;
+        int lastUptime = 0;
+        for(int i = 1; i < GYRO_HISTORY_LEN; i++) {
+            boolean newUp = (gyroHistory[(gyroHistoryWritePos - i) % GYRO_HISTORY_LEN] - average) > 0;
+            if(newUp && !up) {
+                //it's a zero cross
+                if(firstUp) {
+                    firstUp = false;
+                } else {
+                    int time = i - lastUptime;
+                    crosstimes.add(time);
+                }
+                lastUptime = i;
+            }
+            up = newUp;
+        }
+        //determine the average cross time, ignoring the outliers
+        Integer[] sortedCrosstimes = crosstimes.toArray(new Integer[0]);        //TODO inefficient
+        Arrays.sort(sortedCrosstimes);
+        float averageCrosstime = 0;
+        if(sortedCrosstimes.length > 6) {
+            for (int i = 3; i < sortedCrosstimes.length - 3; i++) {
+                averageCrosstime += sortedCrosstimes[i];
+            }
+            averageCrosstime /= (sortedCrosstimes.length - 6);
+        } else {
+            for (int i = 0; i < sortedCrosstimes.length; i++) {
+                averageCrosstime += sortedCrosstimes[i];
+            }
+            averageCrosstime /= (sortedCrosstimes.length);
+        }
+        theperiod = averageCrosstime * updateIntervalMS;
+        return new float[] {theperiod, theconfidence};
+    }
+
+    private float[] findPeakPeriodFFT() {
+        for(int i = 0; i < GYRO_HISTORY_LEN; i++) {
+            fftPeriod[0][i] = gyroHistory[(gyroHistoryWritePos -1 - i) % GYRO_HISTORY_LEN] * cosineWindow[i];
             fftPeriod[1][i] = 0;
         }
         FastFourierTransformer fft = new FastFourierTransformer(DftNormalization.STANDARD);
         fft.transformInPlace(fftPeriod, DftNormalization.STANDARD, TransformType.FORWARD);
+        //transform done, now find peaks
         float peak = -Float.MAX_VALUE;
         int bestIndex = -1;
         float average = 0;
@@ -413,8 +464,8 @@ public class YMSSP2 implements HBAction {
             }
         }
         float freq = bestIndex * sampleFreq / (fftPeriod[0].length/2f); // f_bin = i*f_s/N
-        float period = 1000 / freq;
-        return new float[] {period, (peak - average)};
+        float theperiod = 1000 / freq;
+        return new float[] {theperiod, (peak - average)};
     }
 
 }
