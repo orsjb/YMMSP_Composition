@@ -2,16 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8ac14a86-6248-4999-beb1-94c7835de615" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/my_classes/YMSSP3.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP2$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP2$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP2$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP2$4.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP2$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP2$5.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP2$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP2$6.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP2$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP2$7.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP2$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP2$8.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP2.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/my_classes/YMSSP2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/my_classes/YMSSP2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/my_classes/YMSSP3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/my_classes/YMSSP3.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/build/production/YMSSP/" />
     <ignored path="$PROJECT_DIR$/build/test/YMSSP/" />
@@ -25,22 +17,22 @@
     <session id="-2144258442">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="15" />
+          <entry key="project.closed" value="16" />
           <entry key="project.open.time.10" value="2" />
-          <entry key="project.open.time.11" value="1" />
+          <entry key="project.open.time.11" value="2" />
           <entry key="project.open.time.15" value="1" />
           <entry key="project.open.time.4" value="1" />
           <entry key="project.open.time.42" value="2" />
           <entry key="project.open.time.7" value="5" />
           <entry key="project.open.time.8" value="4" />
           <entry key="project.open.time.9" value="2" />
-          <entry key="project.opened" value="18" />
+          <entry key="project.opened" value="19" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="iml" value="1" />
-          <entry key="java" value="14" />
+          <entry key="java" value="20" />
           <entry key="json" value="1" />
           <entry key="sh" value="3" />
         </counts>
@@ -48,7 +40,7 @@
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="IDEA_MODULE" value="1" />
-          <entry key="JAVA" value="14" />
+          <entry key="JAVA" value="20" />
           <entry key="JSON" value="1" />
           <entry key="PLAIN_TEXT" value="3" />
         </counts>
@@ -56,13 +48,13 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="1" />
-          <entry key="java" value="4060" />
+          <entry key="java" value="4181" />
           <entry key="sh" value="17" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="4060" />
+          <entry key="JAVA" value="4181" />
           <entry key="PLAIN_TEXT" value="18" />
         </counts>
       </usages-collector>
@@ -74,8 +66,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/my_classes/YMSSP3.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="232">
-              <caret line="181" column="60" lean-forward="true" selection-start-line="181" selection-start-column="60" selection-end-line="181" selection-end-column="60" />
+            <state relative-caret-position="211">
+              <caret line="168" column="80" lean-forward="true" selection-start-line="168" selection-start-column="80" selection-end-line="168" selection-end-column="80" />
             </state>
           </provider>
         </entry>
@@ -101,6 +93,7 @@
       <find>setSt</find>
       <find>statusR</find>
       <find>bfFreq</find>
+      <find>Exception in</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -126,9 +119,9 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="y" value="23" />
-    <option name="width" value="1583" />
-    <option name="height" value="1057" />
+    <option name="y" value="323" />
+    <option name="width" value="1440" />
+    <option name="height" value="877" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -138,8 +131,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="AndroidView" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -229,14 +222,14 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="Downloaded.Files.Path.Enabled" value="false" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1537261494827" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1538031321916" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
@@ -264,6 +257,26 @@
       </list>
     </option>
   </component>
+  <component name="RunManager">
+    <configuration name="YMSSP3" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="my_classes.YMSSP3" />
+      <module name="YMSSP" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="my_classes.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.YMSSP3" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -281,7 +294,7 @@
     <frame x="0" y="23" width="1440" height="877" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.13090129" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.11444921" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.24959612" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -290,19 +303,19 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49353796" weight="0.32840723" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.39444444" weight="0.34323922" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.6030043" visible="true" weight="0.34267515" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.46616542" weight="0.39823008" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.48426324" visible="true" weight="0.14522293" />
-      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.51573676" side_tool="true" visible="true" weight="0.14522293" />
+      <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.48354793" weight="0.14522293" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.3969957" side_tool="true" visible="true" weight="0.34267515" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Messages" order="10" sideWeight="0.4921875" weight="0.32838038" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="1" sideWeight="0.496063" weight="0.1648" />
       <window_info anchor="right" id="Palette" order="2" />
-      <window_info anchor="right" id="HappyBrackets" order="3" sideWeight="0.496063" visible="true" weight="0.21101573" />
+      <window_info active="true" anchor="right" id="HappyBrackets" order="3" sideWeight="0.496063" visible="true" weight="0.1981402" />
       <window_info anchor="right" id="Capture Analysis" order="4" />
       <window_info anchor="right" id="Theme Preview" order="5" />
       <window_info anchor="right" id="Palette&#9;" order="6" />
@@ -363,20 +376,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/examples/sensor/accelerometer/SimpleAccelerometer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="22" column="13" lean-forward="true" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/examples/sensor/accelerometer/MonitorAccelerometer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="25" column="17" selection-start-line="25" selection-start-column="17" selection-end-line="25" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/my_classes/BroadcastTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="174">
@@ -404,10 +403,51 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../../HappyBrackets/HappyBrackets/src/main/java/net/happybrackets/core/control/DynamicControl.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../HappyBrackets/HappyBrackets/src/main/java/net/happybrackets/device/sensors/Accelerometer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="197">
+          <caret line="69" column="35" selection-start-line="69" selection-start-column="35" selection-end-line="69" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../HappyBrackets/HappyBrackets/src/main/java/net/happybrackets/device/sensors/Sensor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="257">
+          <caret line="195" lean-forward="true" selection-start-line="195" selection-end-line="195" />
+          <folding>
+            <element signature="e#0#8942#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/examples/fmsynthesis/RatioDepthFM.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="381">
+          <caret line="91" selection-start-line="91" selection-end-line="98" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/examples/sensor/accelerometer/MonitorAccelerometer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-434">
+          <caret line="19" column="19" lean-forward="true" selection-start-line="19" selection-start-column="19" selection-end-line="19" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/examples/sensor/accelerometer/SimpleAccelerometer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="17" column="21" lean-forward="true" selection-start-line="17" selection-start-column="21" selection-end-line="17" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/my_classes/YMSSP3.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="232">
-          <caret line="181" column="60" lean-forward="true" selection-start-line="181" selection-start-column="60" selection-end-line="181" selection-end-column="60" />
+        <state relative-caret-position="211">
+          <caret line="168" column="80" lean-forward="true" selection-start-line="168" selection-start-column="80" selection-end-line="168" selection-end-column="80" />
         </state>
       </provider>
     </entry>

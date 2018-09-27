@@ -15,6 +15,7 @@ import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
 
+import java.lang.invoke.MethodHandles;
 import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,7 +29,7 @@ public class YMSSP3 implements HBAction {
 
     Mode mode;
 
-    final int GYRO_HISTORY_LEN = 512;
+    final int GYRO_HISTORY_LEN = 100;
     final int INTERVAL_HISTORY_LEN = 10;
     final int PERIOD_HISTORY_LEN = 100;
     final int STEPS_BETWEEN_UPDATE = 5;
@@ -96,7 +97,7 @@ public class YMSSP3 implements HBAction {
 
         mode = Mode.UNITY;
         modeUpdated();
-//        setupControls();
+        setupControls();
 
         hb.pattern(new Bead() {
             @Override
@@ -124,7 +125,6 @@ public class YMSSP3 implements HBAction {
 //                            level.addSegment(maxLevel, 50);
                             break;
                     }
-//                    hb.testBleep();
                 }
             }
         });
@@ -148,7 +148,6 @@ public class YMSSP3 implements HBAction {
                     theOtherPeriod = (float)oscMessage.getArg(0);
                     integratedPeriod = (theOtherPeriod + period) / 2;
                 }
-//                hb.setStatus("Got incoming message " + oscMessage.getName());
             }
         });
 
@@ -157,25 +156,22 @@ public class YMSSP3 implements HBAction {
             @Override
             public void sensorUpdated(float x, float y, float z) {
 
-//        new AccelerometerListener(hb) {
-//            @Override
-//            public void sensorUpdate(float x, float y, float z) {
+                try {
+                    //extract overall mag and put into history
+                    gyroMag = (float) Math.sqrt(x * x + y * y + z * z);
 
+                    gyroHistory[gyroHistoryWritePos] = gyroMag;
+                    gyroHistoryWritePos = (gyroHistoryWritePos + 1) % GYRO_HISTORY_LEN;
 
-                //extract overall mag and put into history
-                gyroMag = (float)Math.sqrt(x * x + y * y + z * z);
-
-                gyroHistory[gyroHistoryWritePos] = gyroMag;
-                gyroHistoryWritePos = (gyroHistoryWritePos + 1) % GYRO_HISTORY_LEN;
-                //recalculate new features
-                if(count % STEPS_BETWEEN_UPDATE == 0) {
-                    //get autocorrelation value
-//                    float[] autocorellationFeatures = findPeakPeriodFFT();
+                    //recalculate new features
+                    if (count % STEPS_BETWEEN_UPDATE == 0) {
+                        //get autocorrelation value
+//                        float[] autocorellationFeatures = findPeakPeriodFFT();
                     float[] autocorellationFeatures = findPeakPeriodXCross();
-                    float tempPeriod = autocorellationFeatures[0];
-                    System.out.println(tempPeriod);
+                        float tempPeriod = autocorellationFeatures[0];
+
                     if(tempPeriod > 0 && tempPeriod < 10000) {
-                        period += (tempPeriod - period) * 0.3f;
+                        period += (tempPeriod - period) * 0.5f;
                         //convert period history to -1:1 range before storing
                         float normalisedPeriod = (2 * (period - PMIN) / (PMAX - PMIN)) - 1;
                         normalisedPeriod = (float)Math.tanh(normalisedPeriod);
@@ -224,14 +220,16 @@ public class YMSSP3 implements HBAction {
                     hb.broadcast("D_"+hb.myIndex(), deviation);
                     hb.broadcast("P_"+hb.myIndex(), period);
 
-                    statusReport();
+                        statusReport();
+                    }
+
+
+                    //keep time
+                    count++;
+                } catch(Exception e) {
+                    hb.setStatus("Exception: " + e.getMessage());
+                    e.printStackTrace();
                 }
-
-
-
-
-                //keep time
-                count++;
             }
         };
 
@@ -397,18 +395,18 @@ public class YMSSP3 implements HBAction {
         //get average
         float average = 0;
         for(int i = 0; i < GYRO_HISTORY_LEN; i++) {
-            double val = gyroHistory[(gyroHistoryWritePos - 1 - i) % GYRO_HISTORY_LEN];
+            double val = gyroHistory[(gyroHistoryWritePos - 1 - i + GYRO_HISTORY_LEN) % GYRO_HISTORY_LEN];
             average += val;
 
         }
         average /= GYRO_HISTORY_LEN;
         //determine all the zerocross times
         ArrayList<Integer> crosstimes = new ArrayList<>();      //TODO inefficient
-        boolean up = (gyroHistory[(gyroHistoryWritePos - 1) % GYRO_HISTORY_LEN] - average) > 0;
+        boolean up = (gyroHistory[(gyroHistoryWritePos - 1 + GYRO_HISTORY_LEN) % GYRO_HISTORY_LEN] - average) > 0;
         boolean firstUp = true;
         int lastUptime = 0;
         for(int i = 1; i < GYRO_HISTORY_LEN; i++) {
-            boolean newUp = (gyroHistory[(gyroHistoryWritePos - i) % GYRO_HISTORY_LEN] - average) > 0;
+            boolean newUp = (gyroHistory[(gyroHistoryWritePos - i + GYRO_HISTORY_LEN) % GYRO_HISTORY_LEN] - average) > 0;
             if(newUp && !up) {
                 //it's a zero cross
                 if(firstUp) {
@@ -442,7 +440,7 @@ public class YMSSP3 implements HBAction {
 
     private float[] findPeakPeriodFFT() {
         for(int i = 0; i < GYRO_HISTORY_LEN; i++) {
-            fftPeriod[0][i] = gyroHistory[(gyroHistoryWritePos -1 - i) % GYRO_HISTORY_LEN] * cosineWindow[i];
+            fftPeriod[0][i] = gyroHistory[(gyroHistoryWritePos -1 - i + GYRO_HISTORY_LEN) % GYRO_HISTORY_LEN] * cosineWindow[i];
             fftPeriod[1][i] = 0;
         }
         FastFourierTransformer fft = new FastFourierTransformer(DftNormalization.STANDARD);
@@ -466,6 +464,15 @@ public class YMSSP3 implements HBAction {
         float freq = bestIndex * sampleFreq / (fftPeriod[0].length/2f); // f_bin = i*f_s/N
         float theperiod = 1000 / freq;
         return new float[] {theperiod, (peak - average)};
+    }
+
+    public static void main(String[] args) {
+
+        try {
+            HB.runDebug(MethodHandles.lookup().lookupClass());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
