@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8ac14a86-6248-4999-beb1-94c7835de615" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/my_classes/YMSSP3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/my_classes/YMSSP3.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/build/production/YMSSP/" />
@@ -17,7 +16,7 @@
     <session id="-2144258442">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="16" />
+          <entry key="project.closed" value="17" />
           <entry key="project.open.time.10" value="2" />
           <entry key="project.open.time.11" value="2" />
           <entry key="project.open.time.15" value="1" />
@@ -48,13 +47,13 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="1" />
-          <entry key="java" value="4181" />
+          <entry key="java" value="4231" />
           <entry key="sh" value="17" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="4181" />
+          <entry key="JAVA" value="4231" />
           <entry key="PLAIN_TEXT" value="18" />
         </counts>
       </usages-collector>
@@ -66,8 +65,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/my_classes/YMSSP3.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="211">
-              <caret line="168" column="80" lean-forward="true" selection-start-line="168" selection-start-column="80" selection-end-line="168" selection-end-column="80" />
+            <state relative-caret-position="306">
+              <caret line="176" column="62" selection-start-line="176" selection-start-column="62" selection-end-line="176" selection-end-column="62" />
             </state>
           </provider>
         </entry>
@@ -229,7 +228,7 @@
     <property name="Downloaded.Files.Path.Enabled" value="false" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1538031321916" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1538032612860" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
@@ -303,7 +302,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49353796" weight="0.32840723" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.6030043" visible="true" weight="0.34267515" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.6030043" weight="0.15541402" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.46616542" weight="0.39823008" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -315,7 +314,7 @@
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="1" sideWeight="0.496063" weight="0.1648" />
       <window_info anchor="right" id="Palette" order="2" />
-      <window_info active="true" anchor="right" id="HappyBrackets" order="3" sideWeight="0.496063" visible="true" weight="0.1981402" />
+      <window_info active="true" anchor="right" id="HappyBrackets" order="3" sideWeight="0.496063" visible="true" weight="0.25178826" />
       <window_info anchor="right" id="Capture Analysis" order="4" />
       <window_info anchor="right" id="Theme Preview" order="5" />
       <window_info anchor="right" id="Palette&#9;" order="6" />
@@ -446,8 +445,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/my_classes/YMSSP3.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="211">
-          <caret line="168" column="80" lean-forward="true" selection-start-line="168" selection-start-column="80" selection-end-line="168" selection-end-column="80" />
+        <state relative-caret-position="306">
+          <caret line="176" column="62" selection-start-line="176" selection-start-column="62" selection-end-line="176" selection-end-column="62" />
         </state>
       </provider>
     </entry>

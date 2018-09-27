@@ -29,9 +29,9 @@ public class YMSSP3 implements HBAction {
 
     Mode mode;
 
-    final int GYRO_HISTORY_LEN = 100;
+    final int GYRO_HISTORY_LEN = 100;           //100 x 20ms = 2s possible interval range
     final int INTERVAL_HISTORY_LEN = 10;
-    final int PERIOD_HISTORY_LEN = 100;
+    final int PERIOD_HISTORY_LEN = 10;
     final int STEPS_BETWEEN_UPDATE = 5;
     final int PADDING = 1;
     final float PMIN = 100;
@@ -166,14 +166,13 @@ public class YMSSP3 implements HBAction {
                     //recalculate new features
                     if (count % STEPS_BETWEEN_UPDATE == 0) {
                         //get autocorrelation value
-//                        float[] autocorellationFeatures = findPeakPeriodFFT();
                     float[] autocorellationFeatures = findPeakPeriodXCross();
-                        float tempPeriod = autocorellationFeatures[0];
+                    float tempPeriod = autocorellationFeatures[0];
 
                     if(tempPeriod > 0 && tempPeriod < 10000) {
                         period += (tempPeriod - period) * 0.5f;
                         //convert period history to -1:1 range before storing
-                        float normalisedPeriod = (2 * (period - PMIN) / (PMAX - PMIN)) - 1;
+                        float normalisedPeriod = (2 * (tempPeriod - PMIN) / (PMAX - PMIN)) - 1;
                         normalisedPeriod = (float)Math.tanh(normalisedPeriod);
                         periodHistory[periodHistoryWritePos] = normalisedPeriod;
                         periodHistoryWritePos = (periodHistoryWritePos + 1) % PERIOD_HISTORY_LEN;
