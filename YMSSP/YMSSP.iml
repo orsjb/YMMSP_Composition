@@ -11,5 +11,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="HB" level="project" />
     <orderEntry type="library" name="commons-math3-3.6.1" level="project" />
+    <orderEntry type="library" name="infodynamics" level="project" />
   </component>
 </module>

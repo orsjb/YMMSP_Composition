@@ -2,6 +2,9 @@ package my_classes;
 
 import de.sciss.net.OSCListener;
 import de.sciss.net.OSCMessage;
+import infodynamics.measures.continuous.EntropyCalculator;
+import infodynamics.measures.continuous.gaussian.EntropyCalculatorGaussian;
+import infodynamics.measures.continuous.kernel.EntropyCalculatorKernel;
 import net.beadsproject.beads.core.Bead;
 import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.data.SampleManager;
@@ -10,6 +13,7 @@ import net.happybrackets.core.HBAction;
 import net.happybrackets.core.control.ControlScope;
 import net.happybrackets.core.control.FloatBuddyControl;
 import net.happybrackets.device.HB;
+import net.happybrackets.device.sensors.AccelerometerListener;
 import net.happybrackets.device.sensors.GyroscopeListener;
 import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
@@ -28,6 +32,8 @@ public class YMSSP3 implements HBAction {
     }
 
     Mode mode;
+
+    final double[] storedIncomingSensorData = new double[6];
 
     final int GYRO_HISTORY_LEN = 100;           //100 x 20ms = 2s possible interval range
     final int INTERVAL_HISTORY_LEN = 10;
@@ -103,6 +109,7 @@ public class YMSSP3 implements HBAction {
             @Override
             protected void messageReceived(Bead message) {
                 if(hb.clock.isBeat()) {
+                    hb.testBleep();
                     switch (mode) {
                         case SOLO:
 //                            level.clear();
@@ -155,10 +162,28 @@ public class YMSSP3 implements HBAction {
         new GyroscopeListener(hb) {
             @Override
             public void sensorUpdated(float x, float y, float z) {
+                storedIncomingSensorData[0] = x;
+                storedIncomingSensorData[1] = y;
+                storedIncomingSensorData[2] = z;
+            }
+
+        };
+        new AccelerometerListener(hb) {
+            @Override
+            public void sensorUpdate(float x, float y, float z) {
+
+                storedIncomingSensorData[3] = x;
+                storedIncomingSensorData[4] = y;
+                storedIncomingSensorData[5] = z;
 
                 try {
                     //extract overall mag and put into history
-                    gyroMag = (float) Math.sqrt(x * x + y * y + z * z);
+//                    gyroMag = (float) Math.sqrt(x * x + y * y + z * z);
+                    gyroMag = 0;
+                    for(int i = 0; i < storedIncomingSensorData.length; i++) {
+                        gyroMag += storedIncomingSensorData[i] * storedIncomingSensorData[i];
+                    }
+                    gyroMag = (float)Math.sqrt(gyroMag);
 
                     gyroHistory[gyroHistoryWritePos] = gyroMag;
                     gyroHistoryWritePos = (gyroHistoryWritePos + 1) % GYRO_HISTORY_LEN;
@@ -170,7 +195,7 @@ public class YMSSP3 implements HBAction {
                     float tempPeriod = autocorellationFeatures[0];
 
                     if(tempPeriod > 0 && tempPeriod < 10000) {
-                        period += (tempPeriod - period) * 0.5f;
+                        period += (tempPeriod - period) * 0.1f;
                         //convert period history to -1:1 range before storing
                         float normalisedPeriod = (2 * (tempPeriod - PMIN) / (PMAX - PMIN)) - 1;
                         normalisedPeriod = (float)Math.tanh(normalisedPeriod);
@@ -189,11 +214,15 @@ public class YMSSP3 implements HBAction {
                         errorCount++;
                     }
                     //check regularity
-                    float periodDeviation = calculatePeriodDeviation();
+//                    float periodDeviation = calculatePeriodDeviation();
+                    float periodDeviation = differentialEntropy();
                     //set core variables
                     intensity = gyroMag;
                     periodStrength = autocorellationFeatures[1];
                     deviation = periodDeviation;
+
+                        System.out.println(deviation);
+
                     checkMode();
                     //set the global controls, if we're using them
                     if(intensityControl != null) {
@@ -344,7 +373,7 @@ public class YMSSP3 implements HBAction {
         bf.setQ(1f);
         bf.setGain(1f);
         bf.addInput(g);
-        hb.ac.out.addInput(bf);
+//        hb.ac.out.addInput(bf);
     }
 
     private void setupControls() {
@@ -385,7 +414,13 @@ public class YMSSP3 implements HBAction {
         for(int i = 0; i < PERIOD_HISTORY_LEN; i++) {
             deviation += (periodHistory[i] - average) * (periodHistory[i] - average);
         }
-        return (float)Math.sqrt(deviation);
+        deviation /= PERIOD_HISTORY_LEN - 1;
+        deviation = (float) Math.sqrt(deviation);
+
+
+//        System.out.println("Deviation =----->" + deviation);
+
+        return deviation;
     }
 
     private float[] findPeakPeriodXCross() {
@@ -393,7 +428,7 @@ public class YMSSP3 implements HBAction {
         float theconfidence = 0;
         //get average
         float average = 0;
-        for(int i = 0; i < GYRO_HISTORY_LEN; i++) {
+        for (int i = 0; i < GYRO_HISTORY_LEN; i++) {
             double val = gyroHistory[(gyroHistoryWritePos - 1 - i + GYRO_HISTORY_LEN) % GYRO_HISTORY_LEN];
             average += val;
 
@@ -404,11 +439,11 @@ public class YMSSP3 implements HBAction {
         boolean up = (gyroHistory[(gyroHistoryWritePos - 1 + GYRO_HISTORY_LEN) % GYRO_HISTORY_LEN] - average) > 0;
         boolean firstUp = true;
         int lastUptime = 0;
-        for(int i = 1; i < GYRO_HISTORY_LEN; i++) {
+        for (int i = 1; i < GYRO_HISTORY_LEN; i++) {
             boolean newUp = (gyroHistory[(gyroHistoryWritePos - i + GYRO_HISTORY_LEN) % GYRO_HISTORY_LEN] - average) > 0;
-            if(newUp && !up) {
+            if (newUp && !up) {
                 //it's a zero cross
-                if(firstUp) {
+                if (firstUp) {
                     firstUp = false;
                 } else {
                     int time = i - lastUptime;
@@ -422,20 +457,51 @@ public class YMSSP3 implements HBAction {
         Integer[] sortedCrosstimes = crosstimes.toArray(new Integer[0]);        //TODO inefficient
         Arrays.sort(sortedCrosstimes);
         float averageCrosstime = 0;
-        if(sortedCrosstimes.length > 6) {
+        //average approach
+        if (sortedCrosstimes.length > 6) {
             for (int i = 3; i < sortedCrosstimes.length - 3; i++) {
                 averageCrosstime += sortedCrosstimes[i];
             }
             averageCrosstime /= (sortedCrosstimes.length - 6);
         } else {
-            for (int i = 0; i < sortedCrosstimes.length; i++) {
-                averageCrosstime += sortedCrosstimes[i];
+            //fall back to median approach
+            if (sortedCrosstimes.length > 0) {
+                averageCrosstime = sortedCrosstimes[3 * sortedCrosstimes.length / 4];
             }
-            averageCrosstime /= (sortedCrosstimes.length);
         }
+
+
+
         theperiod = averageCrosstime * updateIntervalMS;
         return new float[] {theperiod, theconfidence};
     }
+
+    double[] sortedHistory = new double[GYRO_HISTORY_LEN];
+
+    private float differentialEntropy() {
+        //get entropy from mag data
+        for (int i = 0; i < GYRO_HISTORY_LEN; i++) {
+            double val = gyroHistory[(gyroHistoryWritePos - i + GYRO_HISTORY_LEN) % GYRO_HISTORY_LEN];
+            sortedHistory[GYRO_HISTORY_LEN - i - 1] = val;
+        }
+//        for (int i = 0; i < PERIOD_HISTORY_LEN; i++) {
+//            double val = periodHistory[(periodHistoryWritePos - i + PERIOD_HISTORY_LEN) % PERIOD_HISTORY_LEN];
+//            sortedHistory[PERIOD_HISTORY_LEN - i - 1] = val;
+//        }
+        double entropy = 0;
+
+        EntropyCalculator calculator = new EntropyCalculatorKernel();
+        try {
+//            calculatorGaussian.setProperty(EntropyCalculatorKernel.KERNEL_WIDTH_PROP_NAME, EntropyCalculatorKernel.NORMALISE_PROP_NAME);
+            calculator.initialise();
+            calculator.setObservations(sortedHistory);
+            entropy = calculator.computeAverageLocalOfObservations();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return (float)entropy;
+    }
+
 
     private float[] findPeakPeriodFFT() {
         for(int i = 0; i < GYRO_HISTORY_LEN; i++) {
