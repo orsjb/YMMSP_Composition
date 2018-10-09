@@ -3,17 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="8ac14a86-6248-4999-beb1-94c7835de615" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$10.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$10.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$3.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$4.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$5.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$6.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$7.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$8.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$9.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$9.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$Mode.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$Mode.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/my_classes/YMSSP3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/my_classes/YMSSP3.java" afterDir="false" />
     </list>
@@ -29,16 +24,17 @@
     <session id="-2144258442">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="19" />
+          <entry key="project.closed" value="21" />
           <entry key="project.open.time.10" value="3" />
-          <entry key="project.open.time.11" value="2" />
+          <entry key="project.open.time.11" value="3" />
           <entry key="project.open.time.15" value="1" />
           <entry key="project.open.time.4" value="1" />
+          <entry key="project.open.time.41" value="1" />
           <entry key="project.open.time.42" value="2" />
           <entry key="project.open.time.7" value="5" />
           <entry key="project.open.time.8" value="4" />
           <entry key="project.open.time.9" value="4" />
-          <entry key="project.opened" value="22" />
+          <entry key="project.opened" value="24" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -60,13 +56,13 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="1" />
-          <entry key="java" value="6611" />
+          <entry key="java" value="7180" />
           <entry key="sh" value="17" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="6611" />
+          <entry key="JAVA" value="7180" />
           <entry key="PLAIN_TEXT" value="18" />
         </counts>
       </usages-collector>
@@ -78,11 +74,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/my_classes/YMSSP3.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="233">
-              <caret line="157" column="54" lean-forward="true" selection-start-line="157" selection-start-column="54" selection-end-line="157" selection-end-column="54" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="225">
+              <caret line="15" column="31" lean-forward="true" selection-start-line="15" selection-start-column="31" selection-end-line="15" selection-end-column="31" />
             </state>
           </provider>
         </entry>
@@ -115,6 +108,7 @@
       <find>checkMode()</find>
       <find>broad</find>
       <find>theOtherDeviation</find>
+      <find>system.out</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -139,10 +133,10 @@
       <select />
     </treeState>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1504" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="1440" />
     <option name="y" value="23" />
-    <option name="width" value="1856" />
+    <option name="width" value="1920" />
     <option name="height" value="1177" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -154,7 +148,6 @@
     </navigator>
     <panes>
       <pane id="AndroidView" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -217,13 +210,14 @@
         </subPane>
       </pane>
       <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="Downloaded.Files.Path.Enabled" value="false" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1539057217585" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1539064033465" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
@@ -286,9 +280,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1438" y="23" width="1920" height="1177" extended-state="6" />
+    <frame x="1440" y="23" width="1920" height="1177" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13897763" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.09371672" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.24959612" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -303,8 +298,8 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.48354793" weight="0.14522293" />
-      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5071531" side_tool="true" visible="true" weight="0.088479266" />
-      <window_info anchor="bottom" id="Version Control" order="9" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5005325" side_tool="true" visible="true" weight="0.3299539" />
+      <window_info anchor="bottom" id="Version Control" order="9" sideWeight="0.49946752" weight="0.3299539" />
       <window_info anchor="bottom" id="Messages" order="10" sideWeight="0.4921875" weight="0.32838038" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="1" sideWeight="0.496063" weight="0.1648" />
@@ -321,6 +316,32 @@
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.sh" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+              <option name="COLUMN_ORDER">
+                <list>
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                </list>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
@@ -437,11 +458,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/my_classes/YMSSP3.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="233">
-          <caret line="157" column="54" lean-forward="true" selection-start-line="157" selection-start-column="54" selection-end-line="157" selection-end-column="54" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="225">
+          <caret line="15" column="31" lean-forward="true" selection-start-line="15" selection-start-column="31" selection-end-line="15" selection-end-column="31" />
         </state>
       </provider>
     </entry>

@@ -6,7 +6,9 @@ import infodynamics.measures.continuous.gaussian.EntropyCalculatorGaussian;
 import infodynamics.measures.discrete.EntropyRateCalculatorDiscrete;
 import net.beadsproject.beads.core.Bead;
 import net.beadsproject.beads.core.UGen;
+import net.beadsproject.beads.data.Buffer;
 import net.beadsproject.beads.data.SampleManager;
+import net.beadsproject.beads.events.KillTrigger;
 import net.beadsproject.beads.ugens.*;
 import net.happybrackets.core.HBAction;
 import net.happybrackets.core.control.ControlScope;
@@ -41,7 +43,7 @@ public class YMSSP3 implements HBAction {
     final int PADDING = 1;
     final float PMIN = 100;
     final float PMAX = 5000;
-    final float DEVIATION_THRESH = 300000f;
+    final float DEVIATION_THRESH = 0.2f; //300000f < this is the thresh if using the spectral entropy
 
     float sensorMagnitude;          //abs mag of gyro movements
     double[] sensorHistory;    //ring buffer storing history of gyro
@@ -118,27 +120,30 @@ public class YMSSP3 implements HBAction {
             @Override
             protected void messageReceived(Bead message) {
                 if (hb.clock.isBeat()) {
-                    hb.testBleep();
                     switch (mode) {
                         case SOLO:
 //                            level.clear();
 //                            level.addSegment(maxLevel, 50);
+                            sawBeep();
                             break;
                         case UNITY:
                             level.clear();
                             level.addSegment(maxLevel, 200);
                             level.addSegment(maxLevel, 100);
                             level.addSegment(0.1f, 200);
+                            hb.testBleep();
                             break;
                         case BASELINE:
                             level.clear();
                             level.addSegment(maxLevel, 200);
                             level.addSegment(maxLevel, 100);
                             level.addSegment(0.1f, 200);
+                            hb.testBleep();
                             break;
                         case DISJOINT:
 //                            level.clear();
 //                            level.addSegment(maxLevel, 50);
+                            sawBeep();
                             break;
                     }
                 }
@@ -155,7 +160,7 @@ public class YMSSP3 implements HBAction {
                     //this must be the other device
                     theOtherDeviation = (float) oscMessage.getArg(0);
                     checkMode();
-                    System.out.println("D" + count++);
+//                    System.out.println("D" + count++);
                 }
                 //period
                 else if (oscMessage.getName().equals("P_" + hb.myIndex())) {
@@ -164,7 +169,7 @@ public class YMSSP3 implements HBAction {
                     //this must be the other device
                     theOtherPeriod = (float) oscMessage.getArg(0);
                     integratedPeriod = (theOtherPeriod + period) / 2;
-                    System.out.println("P" + count++);
+//                    System.out.println("P" + count++);
                 }
             }
         });
@@ -211,6 +216,8 @@ public class YMSSP3 implements HBAction {
                             periodHistoryWritePos = (periodHistoryWritePos + 1) % PERIOD_HISTORY_LEN;
                             if (theOtherPeriod > 0 && mode == Mode.UNITY) {
                                 integratedPeriod = (period + theOtherPeriod) * 0.5f;
+                            } else if(theOtherPeriod > 0 && mode == Mode.SOLO) {
+                                integratedPeriod = theOtherPeriod;
                             } else {
                                 integratedPeriod = period;
                             }
@@ -222,7 +229,7 @@ public class YMSSP3 implements HBAction {
                             errorCount++;
                         }
                         //check regularity
-                        float periodDeviation = getSpectralData()[0];
+                        float periodDeviation = getSpectralData()[1];
                         //set core variables
                         intensity = sensorMagnitude;
                         periodStrength = autocorellationFeatures[1];
@@ -288,19 +295,28 @@ public class YMSSP3 implements HBAction {
 
     private void checkMode() {
         Mode newMode = null;
-        if (theOtherDeviation <= DEVIATION_THRESH && deviation <= DEVIATION_THRESH) {
+        if (theOtherDeviation >= DEVIATION_THRESH && deviation >= DEVIATION_THRESH) {
             newMode = Mode.DISJOINT;
-        } else if (theOtherDeviation <= DEVIATION_THRESH && deviation > DEVIATION_THRESH) {
+        } else if (theOtherDeviation >= DEVIATION_THRESH && deviation < DEVIATION_THRESH) {
             newMode = Mode.BASELINE;
-        } else if (theOtherDeviation > DEVIATION_THRESH && deviation <= DEVIATION_THRESH) {
+        } else if (theOtherDeviation < DEVIATION_THRESH && deviation >= DEVIATION_THRESH) {
             newMode = Mode.SOLO;
-        } else if (theOtherDeviation > DEVIATION_THRESH && deviation > DEVIATION_THRESH) {
+        } else if (theOtherDeviation < DEVIATION_THRESH && deviation < DEVIATION_THRESH) {
             newMode = Mode.UNITY;
         }
         if (newMode != mode) {
             modeUpdated();
             mode = newMode;
         }
+    }
+
+    private void sawBeep() {
+        WavePlayer wp = new WavePlayer(1000, Buffer.SAW);
+        Envelope e = new Envelope(0.1f);
+        Gain g = new Gain(1, e);
+        g.addInput(wp);
+        hb.sound(g);
+        e.addSegment(0, 1000, new KillTrigger(g));
     }
 
     private void statusReport() {
@@ -535,9 +551,10 @@ public class YMSSP3 implements HBAction {
 
 
     /**
-    @return float array with entropy.
+    @return float array with entropy and flatness.
      */
     private float[] getSpectralData() {
+
         for(int i = 0; i < SENSOR_HISTORY_LEN; i++) {
             fftPeriod[0][i] = sensorHistory[(sensorHistoryWritePos - 1 - i + SENSOR_HISTORY_LEN) % SENSOR_HISTORY_LEN] * cosineWindow[i];
             fftPeriod[1][i] = 0;
@@ -546,19 +563,31 @@ public class YMSSP3 implements HBAction {
         fft.transformInPlace(fftPeriod, DftNormalization.STANDARD, TransformType.FORWARD);
         //FFT transform complete, results are in fftPeriod[0].
 
+        int halfLen = SENSOR_HISTORY_LEN / 2;
 
         //get power spectrum
-        for(int i = 0; i < SENSOR_HISTORY_LEN; i++) {
+        for(int i = 0; i < halfLen; i++) {
             fftPeriod[0][i] = fftPeriod[0][i] * fftPeriod[0][i] + fftPeriod[1][i] * fftPeriod[1][i];
         }
 
-        //calc entropy over power spectrum
+        double geomMean = 1;
+        double arithMean = 0;
+        //get spectral flatness over power spectrum
+        for(int i = 0; i < halfLen; i++) {
+            arithMean += fftPeriod[0][i];
+            geomMean *= fftPeriod[0][i];
+        }
+        arithMean /= halfLen;
+        geomMean = Math.pow(geomMean, 1. / halfLen);
+        float flatness = (float)(geomMean / arithMean);
+
+            //calc entropy over power spectrum
         float entropy = 0;
-        for(int i = 0; i < SENSOR_HISTORY_LEN; i++) {
+        for(int i = 0; i < halfLen; i++) {
             entropy += fftPeriod[0][i] * Math.log(fftPeriod[0][i]);
         }
 
-        return new float[]{entropy};
+        return new float[]{entropy, flatness};
     }
 
 }
