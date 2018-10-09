@@ -2,152 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8ac14a86-6248-4999-beb1-94c7835de615" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/infodynamics.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Device/HappyBrackets/data/jars/infodynamics.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/YMSSP.iml" beforeDir="false" afterPath="$PROJECT_DIR$/YMSSP.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/basic/FrequencyEnvelope.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/basic/GainEnvelope.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/basic/HelloWorld.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/booleancontrol/BooleanControlSample$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/booleancontrol/BooleanControlSample.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/booleancontrol/MonitorBoolean$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/booleancontrol/MonitorBoolean$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/booleancontrol/MonitorBoolean.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/floatcontrol/FloatBuddyControlSample$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/floatcontrol/FloatBuddyControlSample$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/floatcontrol/FloatBuddyControlSample.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/floatcontrol/FloatSliderControlSample$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/floatcontrol/FloatSliderControlSample$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/floatcontrol/FloatSliderControlSample.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/floatcontrol/FloatTextControlSample$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/floatcontrol/FloatTextControlSample$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/floatcontrol/FloatTextControlSample.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/floatcontrol/MonitorFloats$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/floatcontrol/MonitorFloats$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/floatcontrol/MonitorFloats$3.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/floatcontrol/MonitorFloats.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/globalcontrol/GlobalControl$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/globalcontrol/GlobalControl$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/globalcontrol/GlobalControl$3.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/globalcontrol/GlobalControl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/integerControl/IntegerBuddyControlSample$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/integerControl/IntegerBuddyControlSample.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/integerControl/IntegerSliderControlSample$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/integerControl/IntegerSliderControlSample.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/integerControl/IntegerTextControlSample$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/integerControl/IntegerTextControlSample$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/integerControl/IntegerTextControlSample.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/integerControl/MonitorIntegers$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/integerControl/MonitorIntegers$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/integerControl/MonitorIntegers$3.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/integerControl/MonitorIntegers.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/textcontrol/SampleTextControl$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/textcontrol/SampleTextControl$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/textcontrol/SampleTextControl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/textcontrol/StringMonitor$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/textcontrol/StringMonitor.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/triggercontrol/TriggerControlSample$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/controls/triggercontrol/TriggerControlSample.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/events/clocks/SensorControlledClock$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/events/clocks/SensorControlledClock.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/events/clocks/SimpleClock.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/events/clocks/VariableClock$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/events/clocks/VariableClock.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/events/envelope/EnvelopeTrigger$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/events/envelope/EnvelopeTrigger$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/events/envelope/EnvelopeTrigger.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/fmsynthesis/BasicFM$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/fmsynthesis/BasicFM.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/fmsynthesis/RatioDepthFM$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/fmsynthesis/RatioDepthFM.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/gpio/DigitalInGPIO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/gpio/DigitalOutGPIO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/gpio/PWMOutGPIO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/midi/basic/MajorChord.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/midi/basic/MinorChord.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/midi/basic/SimpleMIDI.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/midi/scales/CustomScale.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/midi/scales/MajorScale$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/midi/scales/MajorScale.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/midi/scales/MajorScaleModulo.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/multiple/SampleController$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/multiple/SampleController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/pythonscript/RunCommandline.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/pythonscript/RunProcessAndArguments.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/samples/AlternatingLoopedSamplePlayer.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/samples/LoopedSamplePlayer.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/samples/SampleChangeSpeed.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/samples/SamplePitchShift.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/samples/SimpleSamplePlayer.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/samples/sensorcontroller/SampleDirectionGyroscope$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/samples/sensorcontroller/SampleDirectionGyroscope.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/samples/sensorcontroller/SampleRateAccelerometer$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/samples/sensorcontroller/SampleRateAccelerometer.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/samples/sensorcontroller/SampleSpeedAndDirection$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/samples/sensorcontroller/SampleSpeedAndDirection$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/samples/sensorcontroller/SampleSpeedAndDirection$3.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/samples/sensorcontroller/SampleSpeedAndDirection.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/sensor/accelerometer/MonitorAccelerometer$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/sensor/accelerometer/MonitorAccelerometer.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/sensor/accelerometer/SimpleAccelerometer$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/sensor/accelerometer/SimpleAccelerometer.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/sensor/gyroscope/MonitorGyroscope$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/sensor/gyroscope/MonitorGyroscope.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/sensor/gyroscope/SimpleGyroscope$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/sensor/gyroscope/SimpleGyroscope.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/threads/ControlledThread.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/threads/CreatedThread.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/examples/threads/SimpleThread.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/BroadcastTest$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/BroadcastTest$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/BroadcastTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/HowManyOscillators$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/HowManyOscillators$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/HowManyOscillators.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/LiveCoder$1$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/LiveCoder$1$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/LiveCoder$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/LiveCoder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/SyncTest$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/SyncTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/WooshSine$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/WooshSine$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/WooshSine$Orientation.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/WooshSine.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP1$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP1$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP1$3.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP1$4.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP1$5.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP1$6.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP1$7.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP1$8.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP1$9.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP1$Mode.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP2$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP2$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP2$3.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP2$4.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP2$5.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP2$6.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP2$7.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP2$8.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP2$9.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP2$Mode.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$3.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$4.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$5.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$6.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$7.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$8.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$9.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$Mode.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$10.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$10.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$4.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$5.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$6.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$7.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$8.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$9.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$9.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$Mode.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3$Mode.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/production/YMSSP/my_classes/YMSSP3.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/my_classes/YMSSP3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/my_classes/YMSSP3.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/build/production/YMSSP/" />
@@ -162,8 +29,8 @@
     <session id="-2144258442">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="18" />
-          <entry key="project.open.time.10" value="2" />
+          <entry key="project.closed" value="19" />
+          <entry key="project.open.time.10" value="3" />
           <entry key="project.open.time.11" value="2" />
           <entry key="project.open.time.15" value="1" />
           <entry key="project.open.time.4" value="1" />
@@ -171,13 +38,13 @@
           <entry key="project.open.time.7" value="5" />
           <entry key="project.open.time.8" value="4" />
           <entry key="project.open.time.9" value="4" />
-          <entry key="project.opened" value="21" />
+          <entry key="project.opened" value="22" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="iml" value="1" />
-          <entry key="java" value="20" />
+          <entry key="java" value="22" />
           <entry key="json" value="1" />
           <entry key="sh" value="3" />
         </counts>
@@ -185,7 +52,7 @@
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="IDEA_MODULE" value="1" />
-          <entry key="JAVA" value="20" />
+          <entry key="JAVA" value="22" />
           <entry key="JSON" value="1" />
           <entry key="PLAIN_TEXT" value="3" />
         </counts>
@@ -193,13 +60,13 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="1" />
-          <entry key="java" value="5292" />
+          <entry key="java" value="6611" />
           <entry key="sh" value="17" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="5292" />
+          <entry key="JAVA" value="6611" />
           <entry key="PLAIN_TEXT" value="18" />
         </counts>
       </usages-collector>
@@ -211,8 +78,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/my_classes/YMSSP3.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="237" column="37" selection-start-line="237" selection-start-column="37" selection-end-line="237" selection-end-column="37" />
+            <state relative-caret-position="233">
+              <caret line="157" column="54" lean-forward="true" selection-start-line="157" selection-start-column="54" selection-end-line="157" selection-end-column="54" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -240,6 +110,11 @@
       <find>bfFreq</find>
       <find>Exception in</find>
       <find>println</find>
+      <find>deviation</find>
+      <find>deviation =</find>
+      <find>checkMode()</find>
+      <find>broad</find>
+      <find>theOtherDeviation</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -264,10 +139,11 @@
       <select />
     </treeState>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="1504" />
     <option name="y" value="23" />
-    <option name="width" value="1440" />
-    <option name="height" value="877" />
+    <option name="width" value="1856" />
+    <option name="height" value="1177" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -277,6 +153,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="AndroidView" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -323,20 +201,29 @@
               <item name="data" type="462c0819:PsiDirectoryNode" />
               <item name="jars" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="YMSSP" type="b2602c69:ProjectViewProjectNode" />
+              <item name="YMSSP" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="YMSSP" type="b2602c69:ProjectViewProjectNode" />
+              <item name="YMSSP" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="my_classes" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="AndroidView" />
       <pane id="PackagesPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="Downloaded.Files.Path.Enabled" value="false" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1538627946925" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1539057217585" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
@@ -399,10 +286,9 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="877" extended-state="0" />
-    <editor active="true" />
+    <frame x="1438" y="23" width="1920" height="1177" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.09298999" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13897763" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.24959612" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -410,20 +296,20 @@
       <window_info id="UI Designer" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49353796" weight="0.32840723" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.6030043" weight="0.15541402" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49284694" weight="0.32738853" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.60228896" weight="0.29299363" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.46616542" weight="0.39823008" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.48354793" weight="0.14522293" />
-      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.3969957" side_tool="true" visible="true" weight="0.13503185" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5071531" side_tool="true" visible="true" weight="0.088479266" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Messages" order="10" sideWeight="0.4921875" weight="0.32838038" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="1" sideWeight="0.496063" weight="0.1648" />
       <window_info anchor="right" id="Palette" order="2" />
-      <window_info active="true" anchor="right" id="HappyBrackets" order="3" sideWeight="0.496063" visible="true" weight="0.2532189" />
+      <window_info active="true" anchor="right" id="HappyBrackets" order="3" sideWeight="0.496063" visible="true" weight="0.27955273" />
       <window_info anchor="right" id="Capture Analysis" order="4" />
       <window_info anchor="right" id="Theme Preview" order="5" />
       <window_info anchor="right" id="Palette&#9;" order="6" />
@@ -497,20 +383,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/my_classes/YMSSP1.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="714">
-          <caret line="150" column="62" selection-start-line="150" selection-start-column="62" selection-end-line="150" selection-end-column="62" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/my_classes/YMSSP2.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="263">
-          <caret line="194" column="20" selection-start-line="194" selection-start-column="20" selection-end-line="194" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../HappyBrackets/HappyBrackets/src/main/java/net/happybrackets/core/control/DynamicControl.java">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -549,10 +421,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/my_classes/YMSSP1.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1874">
+          <caret line="150" column="62" selection-start-line="150" selection-start-column="62" selection-end-line="150" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/my_classes/YMSSP2.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="780">
+          <caret line="417" column="5" lean-forward="true" selection-start-line="391" selection-end-line="417" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/my_classes/YMSSP3.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="237" column="37" selection-start-line="237" selection-start-column="37" selection-end-line="237" selection-end-column="37" />
+        <state relative-caret-position="233">
+          <caret line="157" column="54" lean-forward="true" selection-start-line="157" selection-start-column="54" selection-end-line="157" selection-end-column="54" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
