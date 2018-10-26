@@ -11,17 +11,17 @@ import net.happybrackets.device.sensors.gpio.GPIOInput;
 import java.lang.invoke.MethodHandles;
 
 /**
- * This composition will blink a digital output on GPIO_1 (pin 12 on PI header)
+ * This composition will blink a digital output on GPIO_23 (pin 33 on PI header)
  * See http://pi4j.com/pins/model-zero-rev1.html for pinouts
  *
- * connect cathode of LED through a resistance to earth and then connect anode to GPIO 1 output
+ * connect cathode of LED through a resistance to earth and then connect anode to GPIO 23 output
  *
  * The state will be displayed in HB Status
  *
  *                                 ↗ ↗
  *
  *                                ┃ ╱┃
- *    _________________╱╲  ╱╲  ___┃╱ ┃_______________ GPIO_1 (pin 12)
+ *    _________________╱╲  ╱╲  ___┃╱ ┃_______________ GPIO_23 (pin 33)
  * __|__                 ╲╱  ╲╱   ┃╲ ┃
  *  ___                           ┃ ╲┃
  *   _
@@ -31,7 +31,7 @@ public class DigitalOutGPIO implements HBAction, HBReset {
 
     boolean exitThread = false;
 
-    final int GPIO_OUTPUT = 1;
+    final int GPIO_OUTPUT = 23;
 
     @Override
     public void action(HB hb) {
@@ -43,29 +43,23 @@ public class DigitalOutGPIO implements HBAction, HBReset {
         // Reset all our GPIO - Only really necessary if the Pin has been assigned as something other than an input before
         GPIO.resetAllGPIO();
 
-        /*****************************************************
-         * Find a General Purpose (GPIO) Digital Output Pin.
-         * to create this code, simply type gpioDigitalOut
-         *****************************************************/
+        /* Type gpioDigitalOut to create this code */
         GPIODigitalOutput outputPin = GPIODigitalOutput.getOutputPin(GPIO_OUTPUT);
         if (outputPin == null) {
             hb.setStatus("Fail GPIO Digital Out " + GPIO_OUTPUT);
-        }
-        /*** End gpioDigitalOut code ***/
+        }/* End gpioDigitalOut code */
 
+
+        // Create a runnable thread to turn Output on and off
         if (outputPin != null)
         {
-            /***********************************************************
-             * Create a runnable thread object
-             * simply type threadFunction to generate this code
-             ***********************************************************/
+            /* Type threadFunction to generate this code */
             Thread thread = new Thread(() -> {
                 int SLEEP_TIME = 500;
-                while (!exitThread) {
-                    /*** write your code below this line ***/
+                while (!exitThread) {/* write your code below this line */
                     outputPin.setState(!outputPin.getState());
 
-                    /*** write your code above this line ***/
+                    /* write your code above this line */
 
                     try {
                         Thread.sleep(SLEEP_TIME);

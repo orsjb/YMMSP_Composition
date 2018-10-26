@@ -176,7 +176,7 @@ public class YMSSP3 implements HBAction {
         //accel
         new AccelerometerListener(hb) {
             @Override
-            public void sensorUpdate(float x, float y, float z) {
+            public void sensorUpdated(float x, float y, float z) {
                 storedIncomingSensorData[0] = x;
                 storedIncomingSensorData[1] = y;
                 storedIncomingSensorData[2] = z;
